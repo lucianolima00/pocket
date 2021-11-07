@@ -1,19 +1,19 @@
-import firebase from 'firebase/app';
+import { initializeApp} from 'firebase/app';
 
-import 'firebase/auth';
-import 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDiQ82QuDEtUuyss85YhabA0KJ2C5v5xEY",
-    authDomain: "pocket-eed70.firebaseapp.com",
-    projectId: "pocket-eed70",
-    storageBucket: "pocket-eed70.appspot.com",
-    messagingSenderId: "175237678471",
-    appId: "1:175237678471:web:8c2303c50b66cbd3f53f22",
-    measurementId: "G-4KMJVM1FZZ"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGIN_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-firebase.initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
-export const auth = firebase.auth();
-export const database = firebase.database();
+// export const auth = getAuth();
+// export const database = getDatabase();
