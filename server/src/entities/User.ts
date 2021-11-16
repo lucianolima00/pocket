@@ -3,7 +3,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 @Entity("user")
 export class User {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()
@@ -13,13 +13,17 @@ export class User {
     cpf_cnpj: string;
 
     @Column()
-    birthdate: Date;
+    birthdate: string;
 
     @Column()
     picture: string;
 
     @Column()
     active: boolean;
+
+    constructor() {
+        this.active = this.active == undefined ? this.active : true
+    }
 
     @CreateDateColumn()
     created_at: Date;
