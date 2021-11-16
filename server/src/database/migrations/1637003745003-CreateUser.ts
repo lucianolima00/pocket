@@ -10,6 +10,8 @@ export class CreateUser1637003745003 implements MigrationInterface {
                     {
                         name: "id",
                         type: "int",
+                        isGenerated: true,
+                        generationStrategy: 'increment',
                         isPrimary: true
                     },
                    {
@@ -17,12 +19,13 @@ export class CreateUser1637003745003 implements MigrationInterface {
                        type: "varchar",
                    },
                    {
-                       name: "birthdate",
-                       type: "date",
+                       name: "cpf_cnpj",
+                       isUnique: true,
+                       type: "varchar",
                    },
                    {
-                       name: "cpf_cnpj",
-                       type: "varchar",
+                       name: "birthdate",
+                       type: "date",
                    },
                    {
                        name: "picture",
@@ -31,6 +34,7 @@ export class CreateUser1637003745003 implements MigrationInterface {
                    {
                        name: "active",
                        type: "tinyint",
+                       default: 1
                    },
                    {
                        name: "created_at",

@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { getCustomRepository } from "typeorm";
-import { UserRepository } from "./repositories/UserRepository";
+import {UserController} from "./controllers/UserController";
+
+const userController = new UserController();
 
 const routes = Router();
 
@@ -10,21 +11,6 @@ routes.get("/", (request, response) => {
     })
 });
 
-routes.post("/user", async (request, response) => {
-    const { name, birthdate, cpf_cnpj, picture } = request.body;
-
-    const userRepository = getCustomRepository(UserRepository);
-
-    const user = userRepository.create({
-        name,
-        birthdate,
-        cpf_cnpj,
-        picture
-    });
-
-    await userRepository.save(user);
-
-    return response.json(user);
-})
+routes.post("/user", userController.create);
 
 export { routes };
