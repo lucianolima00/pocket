@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from "typeorm";
+import { IsEmail } from 'class-validator'
+import bcrypt  from 'bcryptjs';
 
 @Entity("user")
 export class User {
@@ -6,11 +8,18 @@ export class User {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column()
+    @Column({type: "varchar", nullable: false})
     name: string;
 
-    @Column()
+    @Column({type: "varchar", nullable: false})
     cpf_cnpj: string;
+
+    @Column({type: "varchar", nullable: false})
+    @IsEmail()
+    email: string;
+
+    @Column({type: "varchar", nullable: false})
+    password: string;
 
     @Column()
     birthdate: string;
@@ -21,13 +30,19 @@ export class User {
     @Column()
     active: boolean;
 
-    constructor() {
-        this.active = this.active == undefined ? this.active : true
-    }
-
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    hashPassword(){
+        this.password = bcrypt.hashSync(this.password, 10);
+    }
+
+    constructor() {
+        this.active = this.active == undefined ? this.active : true
+    }
 }
