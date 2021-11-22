@@ -20,12 +20,10 @@ export class CreateUser1637003745003 implements MigrationInterface {
                    },
                    {
                        name: "cpf_cnpj",
-                       isUnique: true,
                        type: "varchar",
                    },
                    {
                        name: "email",
-                       isUnique: true,
                        type: "varchar",
                    },
                    {

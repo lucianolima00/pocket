@@ -9,5 +9,6 @@ module.exports = {
   "migrations": [process.env.TYPEORM_MIGRATIONS],
   "cli": {
     "migrationsDir": process.env.TYPEORM_MIGRATIONS_DIR,
+    "entitiesDir": process.env.TYPEORM_ENTITIES_DIR,
   }
 }
