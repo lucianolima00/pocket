@@ -48,7 +48,7 @@ export class User {
     updated_at: Date;
 
     @OneToMany(() => BankAccount, bankAccount => bankAccount.user)
-    bankAccounts: BankAccount
+    bankAccounts: BankAccount[]
 
     @BeforeInsert()
     @BeforeUpdate()

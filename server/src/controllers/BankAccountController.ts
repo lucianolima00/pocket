@@ -1,5 +1,7 @@
 import { getCustomRepository } from "typeorm";
 import { BankAccountRepository } from "../repositories/BankAccountRepository";
+import { BankRepository } from "../repositories/BankRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
 export class BankAccountController {
 
@@ -14,18 +16,23 @@ export class BankAccountController {
     }
 
     async create(request, response) {
-        const { name, type, bank, agency,  account, credit_limit, user } = request.body;
+        const { name, type, bankId, agency,  account, credit_limit, userId } = request.body;
 
         const bankAccountRepository = getCustomRepository(BankAccountRepository);
+        const bankRepository = getCustomRepository(BankRepository);
+        const userRepository = getCustomRepository(UserRepository);
+
+        const bank = await bankRepository.findOne(bankId);
+        const user = await userRepository.findOne(userId);
 
         const bankAccount = bankAccountRepository.create({
             name,
             type,
-            bank,
+            bank: bank,
             agency,
             account,
             credit_limit,
-            user
+            user: user
         });
 
         await bankAccountRepository.save(bankAccount);

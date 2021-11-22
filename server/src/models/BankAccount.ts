@@ -9,27 +9,27 @@ export class BankAccount {
     id: string;
 
     @Column({type: "varchar", nullable: false})
-    name: string
+    name: string;
 
     @Column({type: "varchar", nullable: false})
-    type: string
+    type: string;
 
     @ManyToOne(() => Bank, bank => bank.bankAccounts)
-    bank: Bank
+    bank: Bank;
 
     @Column({type: "varchar", nullable: false})
-    agency: string
+    agency: string;
 
     @Column({type: "varchar", nullable: false})
-    account: string
+    account: string;
 
     @Column({type: "double", nullable: false})
     @IsDecimal()
     @IsCurrency()
-    credit_limit: number
+    credit_limit: number;
 
     @ManyToOne(() => User, user => user.bankAccounts)
-    user: User
+    user: User;
 
     @Column()
     active: boolean;

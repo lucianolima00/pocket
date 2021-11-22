@@ -25,7 +25,7 @@ export class Bank {
     updated_at: Date;
 
     @OneToMany(() => BankAccount, bankAccount => bankAccount.bank)
-    bankAccounts: BankAccount
+    bankAccounts: BankAccount[]
 
     constructor() {
         this.active = this.active == undefined ? true : this.active;

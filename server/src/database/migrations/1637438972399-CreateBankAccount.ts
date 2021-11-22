@@ -23,7 +23,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
                             type: 'varchar'
                         },
                         {
-                            name: 'bank_id',
+                            name: 'bankId',
                             type: 'int'
                         },
                         {
@@ -39,7 +39,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
                             type: 'double'
                         },
                         {
-                            name: 'user_id',
+                            name: 'userId',
                             type: 'int'
                         },
                         {
@@ -63,7 +63,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
         ,true);
 
         await queryRunner.createForeignKey("bank_account", new TableForeignKey({
-            columnNames:["bank_id"],
+            columnNames:["bankId"],
             referencedColumnNames: ["id"],
             referencedTableName: "bank",
             onUpdate: "CASCADE",
@@ -71,7 +71,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
         }));
 
         await queryRunner.createForeignKey("bank_account", new TableForeignKey({
-            columnNames:["user_id"],
+            columnNames:["userId"],
             referencedColumnNames: ["id"],
             referencedTableName: "user",
             onUpdate: "CASCADE",
