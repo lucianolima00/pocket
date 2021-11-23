@@ -50,26 +50,25 @@ export class UserController {
     }
 
     async update(request, response) {
-        const { name, birthdate, cpf_cnpj, email,  password, picture } = request.body;
+        const { name, cpf_cnpj, email, birthdate,  password, picture, active } = request.body;
 
-        const user = userRepository.create({
-            name,
-            cpf_cnpj,
-            email,
-            password,
-            birthdate,
-            picture
-        });
+        const user = await this.findModel(request.params.id);
 
-        const userExist = await userRepository.findOne({ where: { email, cpf_cnpj }});
+        if (user) {
+            user.name = name;
+            user.cpf_cnpj = cpf_cnpj;
+            user.email = email;
+            user.birthdate = birthdate;
+            user.password = password;
+            user.picture = picture;
+            user.active = active;
 
-        if (userExist) {
-            return response.sendStatus(409)
+            if (await userRepository.save(user)) {
+                return response.json(user);
+            }
         }
 
-        await userRepository.save(user);
-
-        return response.json(user);
+        return response.sendStatus(400);
     }
 
     async delete(request, response) {

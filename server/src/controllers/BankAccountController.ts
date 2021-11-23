@@ -30,8 +30,7 @@ export class BankAccountController {
     async create(request, response) {
         const bankRepository = getCustomRepository(BankRepository);
         const userRepository = getCustomRepository(UserRepository);
-
-        const { name, type, bankId, agency,  account, credit_limit, userId } = request.body;
+        const { name, type, bankId, agency,  account, credit_limit, userId, active } = request.body;
 
         const bank = await bankRepository.findOne(bankId);
         const user = await userRepository.findOne(userId);
@@ -43,11 +42,40 @@ export class BankAccountController {
             agency,
             account,
             credit_limit,
-            user: user
+            user: user,
+            active: active
         });
 
         if (await bankAccountRepository.save(bankAccount)) {
             return response.json(bankAccount);
+        }
+
+        return response.sendStatus(400);
+    }
+
+    async update(request, response) {
+        const bankRepository = getCustomRepository(BankRepository);
+        const userRepository = getCustomRepository(UserRepository);
+        const { name, type, bankId, agency,  account, credit_limit, userId, active } = request.body;
+
+        const bank = await bankRepository.findOne(bankId);
+        const user = await userRepository.findOne(userId);
+
+        const bankAccount = await this.findModel(request.params.id);
+
+        if (bankAccount) {
+            bankAccount.name = name;
+            bankAccount.type = type;
+            bankAccount.bank = bank;
+            bankAccount.agency = agency;
+            bankAccount.account = account;
+            bankAccount.credit_limit = credit_limit;
+            bankAccount.user = user;
+            bankAccount.active = active;
+
+            if (await bankAccountRepository.save(bankAccount)) {
+                return response.json(bankAccount);
+            }
         }
 
         return response.sendStatus(400);
