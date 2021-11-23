@@ -6,18 +6,27 @@ const userRepository = getCustomRepository(UserRepository);
 
 export class UserController {
 
+    /**
+     * Get all users
+     * @param request
+     * @param response
+     */
     async index(request, response) {
 
-        const usersExist = await userRepository.find({ where: { active: true }});
+        const users = await userRepository.find({ where: { active: true }});
 
-        if (usersExist) {
-            return response.send(usersExist);
+        if (users) {
+            return response.send(users);
         }
     }
 
+    /**
+     * View an user
+     * @param request
+     * @param response
+     */
     async view(request, response) {
-        const { id } = request.body;
-        const user = this.findModel(id);
+        const user = this.findModel(request.params.id);
 
         if (user) {
             return response.send(user);
@@ -26,6 +35,11 @@ export class UserController {
         return response.sendStatus(404)
     }
 
+    /**
+     * Create an user
+     * @param request
+     * @param response
+     */
     async create(request, response) {
         const { name, birthdate, cpf_cnpj, email,  password, picture } = request.body;
 
@@ -49,6 +63,11 @@ export class UserController {
         return response.json(user);
     }
 
+    /**
+     * Update an user
+     * @param request
+     * @param response
+     */
     async update(request, response) {
         const { name, cpf_cnpj, email, birthdate,  password, picture, active } = request.body;
 
@@ -71,17 +90,26 @@ export class UserController {
         return response.sendStatus(400);
     }
 
+    /**
+     * Delete an user
+     * @param request
+     * @param response
+     */
     async delete(request, response) {
-        const { id } = request.body;
-        const user = this.findModel(id);
+        const user = this.findModel(request.params.id);
 
-        if (user && await userRepository.delete({ id: id, active: true })) {
+        if (user && await userRepository.delete({ id: request.params.id, active: true })) {
             return response.send(200);
         }
 
         return response.send(404);
     }
 
+
+    /**
+     * Find an user model
+     * @param id
+     */
     private async findModel(id) {
         const userExist = await userRepository.findOne({ where: { id: id, active: true }});
 

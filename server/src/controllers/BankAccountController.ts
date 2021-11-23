@@ -7,23 +7,37 @@ const bankAccountRepository = getCustomRepository(BankAccountRepository);
 
 export class BankAccountController {
 
+    /**
+     * Get all bank accounts
+     * @param request
+     * @param response
+     */
     async index(request, response) {
 
-        const bankAccountsExist = await bankAccountRepository.find({ where: { active: true }});
+        const bankAccounts = await bankAccountRepository.find({ where: { active: true }});
 
-        if (bankAccountsExist) {
-            return response.send(bankAccountsExist);
+        if (bankAccounts) {
+            return response.send(bankAccounts);
         }
     }
 
+    /**
+     * View a bank account
+     * @param request
+     * @param response
+     */
     async view(request, response) {
-        const { id } = request.body;
-        const bankAccount = this.findModel(id);
+        const bankAccount = this.findModel(request.params.id);
 
         if (bankAccount) {
             return response.send(bankAccount);
         }
 
+        /**
+         * Create a bank account
+         * @param request
+         * @param response
+         */
         return response.sendStatus(404)
     }
 
@@ -53,6 +67,11 @@ export class BankAccountController {
         return response.sendStatus(400);
     }
 
+    /**
+     * Update a bank account
+     * @param request
+     * @param response
+     */
     async update(request, response) {
         const bankRepository = getCustomRepository(BankRepository);
         const userRepository = getCustomRepository(UserRepository);
@@ -81,16 +100,25 @@ export class BankAccountController {
         return response.sendStatus(400);
     }
 
+    /**
+     * Delete a bank account
+     * @param request
+     * @param response
+     */
     async delete(request, response) {
-        const { id } = request.body;
-        const bankAccount = this.findModel(id);
+        const bankAccount = this.findModel(request.params.id);
 
-        if (bankAccount && await bankAccountRepository.delete({ id: id, active: true })) {
+        if (bankAccount && await bankAccountRepository.delete({ id: request.params.id, active: true })) {
             return response.sendStatus(200);
         }
         return response.sendStatus(404);
     }
 
+
+    /**
+     * Find a bank account model
+     * @param id
+     */
     private async findModel(id) {
         const bankAccountExist = await bankAccountRepository.findOne({ where: { id: id, active: true }});
 
