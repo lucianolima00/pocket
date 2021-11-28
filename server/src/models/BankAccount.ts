@@ -1,7 +1,17 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import {Bank} from "./Bank";
 import {User} from "./User";
 import {IsCurrency, IsDate, IsDecimal} from "class-validator";
+import {Expense} from "./Expense";
+import {Revenue} from "./Revenue";
 
 @Entity('bank_account')
 export class BankAccount {
@@ -41,6 +51,12 @@ export class BankAccount {
     @UpdateDateColumn()
     @IsDate()
     updated_at: Date;
+
+    @OneToMany(() => Expense, expense => expense.bankAccount)
+    expenses: Expense[]
+
+    @OneToMany(() => Revenue, revenue => revenue.bankAccount)
+    revenues: Revenue[]
 
     constructor() {
         this.active = this.active == undefined ? true : this.active;

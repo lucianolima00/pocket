@@ -11,6 +11,8 @@ import {
 import {IsDate, IsEmail} from 'class-validator'
 import bcrypt  from 'bcryptjs';
 import { BankAccount } from "./BankAccount";
+import {Expense} from "./Expense";
+import {Revenue} from "./Revenue";
 
 @Entity("user")
 export class User {
@@ -49,6 +51,12 @@ export class User {
 
     @OneToMany(() => BankAccount, bankAccount => bankAccount.user)
     bankAccounts: BankAccount[]
+
+    @OneToMany(() => Expense, expense => expense.user)
+    expenses: Expense[]
+
+    @OneToMany(() => Revenue, revenue => revenue.user)
+    revenues: Revenue[]
 
     @BeforeInsert()
     @BeforeUpdate()
