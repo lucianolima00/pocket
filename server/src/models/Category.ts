@@ -1,9 +1,9 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {IsDate} from "class-validator";
 
-@Entity('category')
+@Entity("category")
 export class Category {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column({type: 'varchar', nullable: false})
@@ -23,7 +23,7 @@ export class Category {
     @IsDate()
     updated_at: Date;
 
-    /*constructor() {
+    constructor() {
         this.active = this.active == undefined ? true : this.active;
-    }*/
+    }
 }

@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { CategoryController }  from "./controllers/CategoryController";
 import { UserController }  from "./controllers/UserController";
 import { AuthController }  from "./controllers/AuthController";
+import { CategoryController }  from "./controllers/CategoryController";
 import { BankAccountController } from "./controllers/BankAccountController";
+
 import authMiddleware from "./middlewares/authMiddleware";
 
 const userController = new UserController();
 const authController = new AuthController();
-const bankAccountController = new BankAccountController();
 const categoryController = new CategoryController();
+const bankAccountController = new BankAccountController();
 
 const routes = Router();
 

@@ -1,5 +1,6 @@
-import { getCustomRepository } from "typeorm";
+import {getConnectionManager, getCustomRepository, getRepository} from "typeorm";
 import { CategoryRepository } from "../repositories/CategoryRepository";
+import {Category} from "../models/Category";
 
 const categoryRepository = getCustomRepository(CategoryRepository);
 
@@ -25,7 +26,8 @@ export class CategoryController {
      * @param response
      */
     async view(request, response) {
-        const category = this.findModel(request.params.id);
+        const { id } = request.params
+        const category = await this.findModel(id);
 
         if (category) {
             return response.send(category);
@@ -61,9 +63,10 @@ export class CategoryController {
      * @param response
      */
     async update(request, response) {
+        const { id } = request.params
         const { name, relatedTo, active } = request.body;
 
-        const category = await this.findModel(request.params.id);
+        const category = await this.findModel(id);
 
         if (category) {
             category.name = name;
@@ -84,9 +87,10 @@ export class CategoryController {
      * @param response
      */
     async delete(request, response) {
-        const category = this.findModel(request.params.id);
+        const { id } = request.params;
+        const category = this.findModel(id);
 
-        if (category && await categoryRepository.delete({ id: request.params.id, active: true })) {
+        if (category && await categoryRepository.delete({ id: id, active: true })) {
             return response.sendStatus(200);
         }
         return response.sendStatus(404);
@@ -102,10 +106,10 @@ export class CategoryController {
     private async findModel(id=null, name=null, relatedTo=null) {
         let categoryExist = null;
 
-        if (!id && name && relatedTo){
-            categoryExist = await categoryRepository.findOne({ where: { name: name, relatedTo: relatedTo, active: true }});
-        } else if (id) {
+        if (id) {
             categoryExist = await categoryRepository.findOne({ where: { id: id, active: true }});
+        } else {
+            categoryExist = await categoryRepository.findOne({ where: { name: name, relatedTo: relatedTo, active: true }});
         }
 
         if (categoryExist) {
