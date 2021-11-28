@@ -1,23 +1,31 @@
 import { getCustomRepository } from "typeorm";
 import { UserRepository } from "../repositories/UserRepository";
-import {BankAccountRepository} from "../repositories/BankAccountRepository";
 
 const userRepository = getCustomRepository(UserRepository);
 
 export class UserController {
 
+    /**
+     * Get all users
+     * @param request
+     * @param response
+     */
     async index(request, response) {
+        const users = await userRepository.find({active: true});
 
-        const usersExist = await userRepository.find({ where: { active: true }});
-
-        if (usersExist) {
-            return response.send(usersExist);
+        if (users) {
+            return response.send(users);
         }
     }
 
+    /**
+     * View an user
+     * @param request
+     * @param response
+     */
     async view(request, response) {
-        const { id } = request.body;
-        const user = this.findModel(id);
+
+        const user = await userRepository.findOne(request.params.id);
 
         if (user) {
             return response.send(user);
@@ -26,6 +34,11 @@ export class UserController {
         return response.sendStatus(404)
     }
 
+    /**
+     * Create an user
+     * @param request
+     * @param response
+     */
     async create(request, response) {
         const { name, birthdate, cpf_cnpj, email,  password, picture } = request.body;
 
@@ -38,21 +51,27 @@ export class UserController {
             picture
         });
 
-        const userExist = await userRepository.findOne({ where: { email, cpf_cnpj }});
+        const userExist = await userRepository.findByEmailOrCpfCnpj(email, cpf_cnpj);
 
         if (userExist) {
             return response.sendStatus(409)
+        } else if (await userRepository.save(user)) {
+            return response.json(user);
         }
 
-        await userRepository.save(user);
-
-        return response.json(user);
+        return response.sendStatus(400)
     }
 
+    /**
+     * Update an user
+     * @param request
+     * @param response
+     */
     async update(request, response) {
         const { name, cpf_cnpj, email, birthdate,  password, picture, active } = request.body;
 
-        const user = await this.findModel(request.params.id);
+
+        const user = await userRepository.findOne(request.params.id);
 
         if (user) {
             user.name = name;
@@ -71,24 +90,18 @@ export class UserController {
         return response.sendStatus(400);
     }
 
+    /**
+     * Delete an user
+     * @param request
+     * @param response
+     */
     async delete(request, response) {
-        const { id } = request.body;
-        const user = this.findModel(id);
+        const user = await userRepository.findOne(request.params.id);
 
-        if (user && await userRepository.delete({ id: id, active: true })) {
+        if (user && await userRepository.delete({ id: request.params.id, active: true })) {
             return response.send(200);
         }
 
         return response.send(404);
-    }
-
-    private async findModel(id) {
-        const userExist = await userRepository.findOne({ where: { id: id, active: true }});
-
-        if (userExist) {
-            return userExist;
-        }
-
-        return null;
     }
 }
