@@ -3,7 +3,7 @@ import {IsDate} from "class-validator";
 import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
 
-@Entity("category")
+@Entity()
 export class Category {
     @PrimaryGeneratedColumn('increment')
     id: number;

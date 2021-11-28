@@ -17,7 +17,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
                         },
                         {
                             name: "relatedTo",
-                            type: "int",
+                            type: "varchar",
                         },
                         {
                             name: "date",
@@ -79,7 +79,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
             {
                 columnNames: ["bankAccountId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "bankAccount",
+                referencedTableName: "bank_account",
                 onUpdate: "CASCADE",
                 onDelete: "CASCADE"
             }

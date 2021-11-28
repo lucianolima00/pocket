@@ -13,7 +13,7 @@ import {IsCurrency, IsDate, IsDecimal} from "class-validator";
 import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
 
-@Entity('bank_account')
+@Entity()
 export class BankAccount {
     @PrimaryGeneratedColumn("increment")
     id: string;

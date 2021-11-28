@@ -14,7 +14,7 @@ import { BankAccount } from "./BankAccount";
 import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
 
-@Entity("user")
+@Entity()
 export class User {
     @PrimaryGeneratedColumn('increment')
     id: number;

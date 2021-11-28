@@ -2,7 +2,7 @@ import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Upd
 import {BankAccount} from "./BankAccount";
 import {IsDate} from "class-validator";
 
-@Entity('bank')
+@Entity()
 export class Bank {
     @PrimaryGeneratedColumn('increment')
     id: number;
