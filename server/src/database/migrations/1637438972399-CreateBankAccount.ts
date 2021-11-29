@@ -86,5 +86,4 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
 
         await queryRunner.dropTable('bank_account');
     }
-
 }
