@@ -13,8 +13,7 @@ export class BankAccountController {
      * @param response
      */
     async index(request, response) {
-
-        const bankAccounts = await bankAccountRepository.find({ where: { active: true }});
+        const bankAccounts = await bankAccountRepository.find({ active: true });
 
         if (bankAccounts) {
             return response.send(bankAccounts);
@@ -27,7 +26,7 @@ export class BankAccountController {
      * @param response
      */
     async view(request, response) {
-        const bankAccount = this.findModel(request.params.id);
+        const bankAccount = await bankAccountRepository.findOne(request.params.id);
 
         if (bankAccount) {
             return response.send(bankAccount);
@@ -80,7 +79,7 @@ export class BankAccountController {
         const bank = await bankRepository.findOne(bankId);
         const user = await userRepository.findOne(userId);
 
-        const bankAccount = await this.findModel(request.params.id);
+        const bankAccount = await bankAccountRepository.findOne(request.params.id);
 
         if (bankAccount) {
             bankAccount.name = name;
@@ -106,26 +105,11 @@ export class BankAccountController {
      * @param response
      */
     async delete(request, response) {
-        const bankAccount = this.findModel(request.params.id);
+        const bankAccount = await bankAccountRepository.findOne(request.params.id);
 
         if (bankAccount && await bankAccountRepository.delete({ id: request.params.id, active: true })) {
             return response.sendStatus(200);
         }
         return response.sendStatus(404);
-    }
-
-
-    /**
-     * Find a bank account model
-     * @param id
-     */
-    private async findModel(id) {
-        const bankAccountExist = await bankAccountRepository.findOne({ where: { id: id, active: true }});
-
-        if (bankAccountExist) {
-            return bankAccountExist;
-        }
-
-        return null;
     }
 }

@@ -16,7 +16,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
                             isPrimary:true,
                         },
                         {
-                            name: "relatedTo",
+                            name: "type",
                             type: "varchar",
                         },
                         {
@@ -32,7 +32,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
                             type: "varchar"
                         },
                         {
-                            name: "type",
+                            name: "billingType",
                             type: "int",
                         },
                         {

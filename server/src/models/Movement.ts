@@ -7,14 +7,10 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {IsCurrency, IsDate, IsDecimal} from "class-validator";
-
-export enum MovementType {
-    CREDIT,
-    DEBIT
-}
+import {ExpensePaymentMode, BillingType} from "../helpers/MovementEnums";
 
 @Entity()
-@TableInheritance({column: { name: "relatedTo", type: "varchar"}})
+@TableInheritance({column: { name: "type", type: "varchar"}})
 export class Movement {
     @PrimaryGeneratedColumn("increment")
     id: number;
@@ -32,10 +28,20 @@ export class Movement {
 
     @Column({
         type: "enum",
-        enum: MovementType,
+        enum: BillingType,
         nullable: false
     })
-    type: number;
+    billingType: BillingType;
+
+    @Column({
+        type: "enum",
+        enum: ExpensePaymentMode,
+        default: ExpensePaymentMode.IN_CASH
+    })
+    paymentMode: ExpensePaymentMode;
+
+    @Column({type: "int", default: 1})
+    installmentNumber: number;
 
     @Column()
     active: boolean;
@@ -47,4 +53,10 @@ export class Movement {
     @UpdateDateColumn()
     @IsDate()
     updated_at: Date;
+
+    constructor() {
+        this.paymentMode = this.paymentMode == undefined ? ExpensePaymentMode.IN_CASH : this.paymentMode;
+        this.installmentNumber = this.installmentNumber == undefined ? 1 : this.installmentNumber;
+        this.active = this.active == undefined ? true : this.active;
+    }
 }

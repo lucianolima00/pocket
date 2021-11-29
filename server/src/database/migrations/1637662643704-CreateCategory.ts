@@ -19,7 +19,7 @@ export class CreateCategory1637662643704 implements MigrationInterface {
                             type: 'varchar'
                         },
                         {
-                            name: 'relatedTo',
+                            name: 'type',
                             type: 'varchar'
                         },
                         {

@@ -1,24 +1,29 @@
 import {ChildEntity, Column, ManyToOne} from "typeorm";
 import {Movement} from "./Movement";
-import {Category} from "./Category";
 import {User} from "./User";
 import {BankAccount} from "./BankAccount";
+import {ExpensePaymentMode} from "../helpers/MovementEnums";
+import {ExpenseCategory} from "./ExpenseCategory";
 
 @ChildEntity()
 export class Expense extends Movement{
 
-    @Column({type: "int"})
-    paymentMode: number;
+    @Column({
+        type: "enum",
+        enum: ExpensePaymentMode,
+        default: ExpensePaymentMode.IN_CASH
+    })
+    paymentMode: ExpensePaymentMode;
 
-    @Column({type: "int"})
+    @Column({type: "int", default: 0})
     installmentNumber: number;
 
-    @ManyToOne(() => Category, category => category.expenses)
-    category: Category
+    @ManyToOne(() => ExpenseCategory, expenseCategory => expenseCategory.expenses)
+    category: ExpenseCategory;
 
     @ManyToOne(() => BankAccount, bankAccount => bankAccount.expenses)
-    bankAccount: BankAccount
+    bankAccount: BankAccount;
 
     @ManyToOne(() => User, user => user.expenses)
-    user: User
+    user: User;
 }
