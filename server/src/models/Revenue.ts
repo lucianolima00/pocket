@@ -1,14 +1,14 @@
 import {ChildEntity, ManyToOne} from "typeorm";
 import {Movement} from "./Movement";
-import {Category} from "./Category";
 import {BankAccount} from "./BankAccount";
 import {User} from "./User";
+import {RevenueCategory} from "./RevenueCategory";
 
 @ChildEntity()
 export class Revenue extends Movement {
 
-    @ManyToOne(() => Category, category => category.revenues)
-    category: Category
+    @ManyToOne(() => RevenueCategory, revenueCategory => revenueCategory.revenues)
+    category: RevenueCategory
 
     @ManyToOne(() => BankAccount, bankAccount => bankAccount.revenues)
     bankAccount: BankAccount

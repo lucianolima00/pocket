@@ -1,15 +1,21 @@
 import { Router } from "express";
 import { UserController }  from "./controllers/UserController";
-import { AuthController }  from "./controllers/AuthController";
-import { CategoryController }  from "./controllers/CategoryController";
+import { AppController }  from "./controllers/AppController";
+import { ExpenseCategoryController }  from "./controllers/ExpenseCategoryController";
+import {RevenueCategoryController} from "./controllers/RevenueCategoryController";
 import { BankAccountController } from "./controllers/BankAccountController";
+import {ExpenseController} from "./controllers/ExpenseController";
+import {RevenueController} from "./controllers/RevenueController";
 
 import authMiddleware from "./middlewares/authMiddleware";
 
+const appController = new AppController();
 const userController = new UserController();
-const authController = new AuthController();
-const categoryController = new CategoryController();
+const expenseCategoryController = new ExpenseCategoryController();
+const revenueCategoryController = new RevenueCategoryController();
 const bankAccountController = new BankAccountController();
+const expenseController = new ExpenseController();
+const revenueController = new RevenueController();
 
 const routes = Router();
 
@@ -22,7 +28,7 @@ routes.get("/", (request, response) => {
 /**
  * Authenticate Route
  */
-routes.post("/auth", authController.authenticate);
+routes.post("/auth", appController.authenticate);
 
 /**
  * Routes for User Controller
@@ -45,10 +51,37 @@ routes.delete("/bank-account/:id", authMiddleware, bankAccountController.delete)
 /**
  * Routes for Category Controller
  */
-routes.get("/category", authMiddleware, categoryController.index);
-routes.get("/category/:id", authMiddleware, categoryController.view);
-routes.post("/category", authMiddleware, categoryController.create);
-routes.put("/category/:id", authMiddleware, categoryController.update);
-routes.delete("/category/:id", authMiddleware, categoryController.delete);
+routes.get("/expense-category", authMiddleware, expenseCategoryController.index);
+routes.get("/expense-category/:id", authMiddleware, expenseCategoryController.view);
+routes.post("/expense-category", authMiddleware, expenseCategoryController.create);
+routes.put("/expense-category/:id", authMiddleware, expenseCategoryController.update);
+routes.delete("/expense-category/:id", authMiddleware, expenseCategoryController.delete);
+
+/**
+ * Routes for Category Controller
+ */
+routes.get("/revenue-category", authMiddleware, revenueCategoryController.index);
+routes.get("/revenue-category/:id", authMiddleware, revenueCategoryController.view);
+routes.post("/revenue-category", authMiddleware, revenueCategoryController.create);
+routes.put("/revenue-category/:id", authMiddleware, revenueCategoryController.update);
+routes.delete("/revenue-category/:id", authMiddleware, revenueCategoryController.delete);
+
+/**
+ * Routes for Expense Controller
+ */
+routes.get("/expense", authMiddleware, expenseController.index);
+routes.get("/expense/:id", authMiddleware, expenseController.view);
+routes.post("/expense", authMiddleware, expenseController.create);
+routes.put("/expense/:id", authMiddleware, expenseController.update);
+routes.delete("/expense/:id", authMiddleware, expenseController.delete);
+
+/**
+ * Routes for Expense Controller
+ */
+routes.get("/revenue", authMiddleware, revenueController.index);
+routes.get("/revenue/:id", authMiddleware, revenueController.view);
+routes.post("/revenue", authMiddleware, revenueController.create);
+routes.put("/revenue/:id", authMiddleware, revenueController.update);
+routes.delete("/revenue/:id", authMiddleware, revenueController.delete);
 
 export { routes };
