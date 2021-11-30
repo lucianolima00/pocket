@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { UserController }  from "./controllers/UserController";
-import { AppController }  from "./controllers/AppController";
+import { DefaultController }  from "./controllers/DefaultController";
 import { ExpenseCategoryController }  from "./controllers/ExpenseCategoryController";
 import {RevenueCategoryController} from "./controllers/RevenueCategoryController";
 import { BankAccountController } from "./controllers/BankAccountController";
@@ -9,7 +9,7 @@ import {RevenueController} from "./controllers/RevenueController";
 
 import authMiddleware from "./middlewares/authMiddleware";
 
-const appController = new AppController();
+const defaultController = new DefaultController();
 const userController = new UserController();
 const expenseCategoryController = new ExpenseCategoryController();
 const revenueCategoryController = new RevenueCategoryController();
@@ -28,7 +28,7 @@ routes.get("/", (request, response) => {
 /**
  * Authenticate Route
  */
-routes.post("/auth", appController.authenticate);
+routes.post("/auth", defaultController.authenticate);
 
 /**
  * Routes for User Controller

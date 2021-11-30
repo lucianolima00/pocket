@@ -77,6 +77,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
 
         await queryRunner.createForeignKey("movement", new TableForeignKey(
             {
+                name: "fkMovementToBankAccount",
                 columnNames: ["bankAccountId"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "bank_account",
@@ -87,6 +88,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
 
         await queryRunner.createForeignKey("movement", new TableForeignKey(
             {
+                name: "fkMovementToCategory",
                 columnNames: ["categoryId"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "category",
@@ -97,6 +99,7 @@ export class CreateMovement1638104592363 implements MigrationInterface {
 
         await queryRunner.createForeignKey("movement", new TableForeignKey(
             {
+                name: "fkMovementToUser",
                 columnNames: ["userId"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "user",

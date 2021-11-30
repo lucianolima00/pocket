@@ -3,7 +3,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-export class AppController {
+export class DefaultController {
     async authenticate(request, response) {
         const { email,  password } = request.body;
 

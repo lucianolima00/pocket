@@ -38,6 +38,11 @@ export class BankAccount {
     @IsCurrency()
     credit_limit: number;
 
+    @Column({type: "double", nullable: false})
+    @IsDecimal()
+    @IsCurrency()
+    balance: number;
+
     @ManyToOne(() => User, user => user.bankAccounts)
     user: User;
 
