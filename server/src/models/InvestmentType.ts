@@ -1,19 +1,25 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import {IsCurrency, IsDate, IsDecimal} from "class-validator";
 import {BankAccount} from "./BankAccount";
 
 @Entity()
-export class Investment {
+export class InvestmentType {
     @PrimaryGeneratedColumn("increment")
     id: number;
 
-    @Column({type: "double", nullable: false})
-    @IsDecimal()
-    @IsCurrency()
-    value: number;
+    @Column({type: "varchar", nullable: false})
+    name: string;
 
-    @Column({type: "date", nullable: false})
-    date: Date;
+    @Column({type: "varchar", nullable: false})
+    code: string;
 
     @Column()
     active: boolean;
@@ -26,8 +32,8 @@ export class Investment {
     @IsDate()
     updated_at: Date;
 
-    @ManyToOne(() => BankAccount, bankAccount => bankAccount.investments)
-    bankAccount: BankAccount;
+    @OneToMany(() => BankAccount, bankAccount => bankAccount.investmentType)
+    bankAccounts: BankAccount[];
 
     constructor() {
         this.active = this.active == undefined ? true : this.active;

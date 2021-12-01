@@ -14,6 +14,7 @@ import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
 import {Transference} from "./Transference";
 import {Investment} from "./Investment";
+import {InvestmentType} from "./InvestmentType";
 
 @Entity()
 export class BankAccount {
@@ -47,6 +48,9 @@ export class BankAccount {
 
     @ManyToOne(() => User, user => user.bankAccounts)
     user: User;
+
+    @ManyToOne(() => InvestmentType, investmentType => investmentType.bankAccounts)
+    investmentType: InvestmentType;
 
     @Column()
     active: boolean;
