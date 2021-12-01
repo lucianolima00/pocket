@@ -23,6 +23,21 @@ export class CreateInvestmentType1638284211959 implements MigrationInterface {
                             name: "code",
                             type: "varchar",
                         },
+                        {
+                            name: "active",
+                            type: "tinyint",
+                            default: 1
+                        },
+                        {
+                            name: "created_at",
+                            type: "timestamp",
+                            default: "now()"
+                        },
+                        {
+                            name: "updated_at",
+                            type: "timestamp",
+                            default: "now()"
+                        }
                     ]
                 }
             )

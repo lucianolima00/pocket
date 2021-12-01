@@ -12,6 +12,8 @@ import {User} from "./User";
 import {IsCurrency, IsDate, IsDecimal} from "class-validator";
 import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
+import {Transference} from "./Transference";
+import {Investment} from "./Investment";
 
 @Entity()
 export class BankAccount {
@@ -62,6 +64,15 @@ export class BankAccount {
 
     @OneToMany(() => Revenue, revenue => revenue.bankAccount)
     revenues: Revenue[]
+
+    @OneToMany(() => Transference, fromTransferences => fromTransferences.fromBankAccount)
+    fromTransferences: Transference[]
+
+    @OneToMany(() => Transference, toTransferences => toTransferences.fromBankAccount)
+    toTransferences: Transference[]
+
+    @OneToMany(() => Investment, investment => investment.bankAccount)
+    investments: Investment[]
 
     constructor() {
         this.active = this.active == undefined ? true : this.active;

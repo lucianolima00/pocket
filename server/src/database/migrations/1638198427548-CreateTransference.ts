@@ -34,6 +34,21 @@ export class CreateTransference1638198427548 implements MigrationInterface {
                         {
                             name: "userId",
                             type: "int",
+                        },
+                        {
+                            name: "active",
+                            type: "tinyint",
+                            default: 1
+                        },
+                        {
+                            name: "created_at",
+                            type: "timestamp",
+                            default: "now()"
+                        },
+                        {
+                            name: "updated_at",
+                            type: "timestamp",
+                            default: "now()"
                         }
                     ]
                 }
