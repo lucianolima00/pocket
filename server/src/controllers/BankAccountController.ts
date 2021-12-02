@@ -2,8 +2,12 @@ import { getCustomRepository } from "typeorm";
 import { BankAccountRepository } from "../repositories/BankAccountRepository";
 import { BankRepository } from "../repositories/BankRepository";
 import { UserRepository } from "../repositories/UserRepository";
+import {InvestmentTypeRepository} from "../repositories/InvestmentTypeRepository";
 
 const bankAccountRepository = getCustomRepository(BankAccountRepository);
+const bankRepository = getCustomRepository(BankRepository);
+const userRepository = getCustomRepository(UserRepository);
+const investmentTypeRepository = getCustomRepository(InvestmentTypeRepository);
 
 export class BankAccountController {
 
@@ -41,12 +45,11 @@ export class BankAccountController {
     }
 
     async create(request, response) {
-        const bankRepository = getCustomRepository(BankRepository);
-        const userRepository = getCustomRepository(UserRepository);
-        const { name, type, bankId, agency,  account, credit_limit, userId, active } = request.body;
+        const { name, type, bankId, agency,  account, credit_limit, balance, investmentTypeId, userId, active } = request.body;
 
         const bank = await bankRepository.findOne(bankId);
         const user = await userRepository.findOne(userId);
+        const investmentType = await investmentTypeRepository.findOne(investmentTypeId);
 
         const bankAccount = bankAccountRepository.create({
             name,
@@ -55,6 +58,8 @@ export class BankAccountController {
             agency,
             account,
             credit_limit,
+            balance,
+            investmentType: investmentType,
             user: user,
             active: active
         });
@@ -72,28 +77,29 @@ export class BankAccountController {
      * @param response
      */
     async update(request, response) {
-        const bankRepository = getCustomRepository(BankRepository);
-        const userRepository = getCustomRepository(UserRepository);
-        const { name, type, bankId, agency,  account, credit_limit, userId, active } = request.body;
+        const { name, type, bankId, agency,  account, credit_limit, balance, investmentTypeId, userId, active } = request.body;
 
         const bank = await bankRepository.findOne(bankId);
         const user = await userRepository.findOne(userId);
+        const investmentType = await investmentTypeRepository.findOne(investmentTypeId);
 
-        const bankAccount = await bankAccountRepository.findOne(request.params.id);
+        const params = {
+            name,
+            type,
+            bank: bank,
+            agency,
+            account,
+            credit_limit,
+            balance,
+            investmentType: investmentType,
+            user: user,
+            active: active
+        }
 
-        if (bankAccount) {
-            bankAccount.name = name;
-            bankAccount.type = type;
-            bankAccount.bank = bank;
-            bankAccount.agency = agency;
-            bankAccount.account = account;
-            bankAccount.credit_limit = credit_limit;
-            bankAccount.user = user;
-            bankAccount.active = active;
+        if (await bankAccountRepository.update({id: request.params.id}, params)) {
+            const bankAccount = await bankAccountRepository.findOne(request.params.id);
 
-            if (await bankAccountRepository.save(bankAccount)) {
-                return response.json(bankAccount);
-            }
+            return response.json(bankAccount);
         }
 
         return response.sendStatus(400);

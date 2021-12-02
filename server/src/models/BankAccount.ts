@@ -49,7 +49,7 @@ export class BankAccount {
     @ManyToOne(() => User, user => user.bankAccounts)
     user: User;
 
-    @ManyToOne(() => InvestmentType, investmentType => investmentType.bankAccounts)
+    @ManyToOne(() => InvestmentType, investmentType => investmentType.bankAccounts, { nullable: true })
     investmentType: InvestmentType;
 
     @Column()

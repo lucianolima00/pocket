@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {IsCurrency, IsDate, IsDecimal} from "class-validator";
+import {IsBoolean, isBoolean, IsCurrency, IsDate, IsDecimal} from "class-validator";
 import {BankAccount} from "./BankAccount";
 
 @Entity()
@@ -13,10 +13,11 @@ export class Investment {
     value: number;
 
     @Column({type: "date", nullable: false})
+    @IsDate()
     date: Date;
 
-    @Column()
-    active: boolean;
+    @ManyToOne(() => BankAccount, bankAccount => bankAccount.investments)
+    bankAccount: BankAccount;
 
     @CreateDateColumn()
     @IsDate()
@@ -25,11 +26,4 @@ export class Investment {
     @UpdateDateColumn()
     @IsDate()
     updated_at: Date;
-
-    @ManyToOne(() => BankAccount, bankAccount => bankAccount.investments)
-    bankAccount: BankAccount;
-
-    constructor() {
-        this.active = this.active == undefined ? true : this.active;
-    }
 }

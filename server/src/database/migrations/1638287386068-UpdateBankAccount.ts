@@ -12,10 +12,12 @@ export class UpdateBankAccount1638287386068 implements MigrationInterface {
             new TableColumn({
                 name: "investmentTypeId",
                 type: "int",
+                isNullable: true
             }),
             new TableColumn({
                 name: "percentage",
                 type: "int",
+                isNullable: true
             }),
         ]);
 
