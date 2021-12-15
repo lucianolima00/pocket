@@ -13,6 +13,7 @@ import bcrypt  from 'bcryptjs';
 import { BankAccount } from "./BankAccount";
 import {Expense} from "./Expense";
 import {Revenue} from "./Revenue";
+import {Transference} from "./Transference";
 
 @Entity()
 export class User {
@@ -57,6 +58,9 @@ export class User {
 
     @OneToMany(() => Revenue, revenue => revenue.user)
     revenues: Revenue[]
+
+    @OneToMany(() => Transference, transferences => transferences.user)
+    transferences: Transference[]
 
     @BeforeInsert()
     @BeforeUpdate()

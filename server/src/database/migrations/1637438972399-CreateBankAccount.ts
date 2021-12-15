@@ -63,6 +63,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
         ,true);
 
         await queryRunner.createForeignKey("bank_account", new TableForeignKey({
+            name: "fkBankAccountToBank",
             columnNames:["bankId"],
             referencedColumnNames: ["id"],
             referencedTableName: "bank",
@@ -71,6 +72,7 @@ export class CreateBankAccount1637438972399 implements MigrationInterface {
         }));
 
         await queryRunner.createForeignKey("bank_account", new TableForeignKey({
+            name: "fkBankAccountToUser",
             columnNames:["userId"],
             referencedColumnNames: ["id"],
             referencedTableName: "user",

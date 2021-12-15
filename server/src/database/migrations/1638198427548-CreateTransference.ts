@@ -1,59 +1,39 @@
 import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
 
-export class CreateMovement1638104592363 implements MigrationInterface {
+export class CreateTransference1638198427548 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.createTable(
+        queryRunner.createTable(
             new Table(
                 {
-                    name: "movement",
+                    name: "transference",
                     columns: [
                         {
                             name: "id",
                             type: "int",
                             isGenerated: true,
                             generationStrategy: "increment",
-                            isPrimary:true,
-                        },
-                        {
-                            name: "type",
-                            type: "varchar",
-                        },
-                        {
-                            name: "date",
-                            type: "date"
+                            isPrimary: true
                         },
                         {
                             name: "value",
-                            type: "double"
+                            type: "double",
                         },
                         {
-                            name: "description",
-                            type: "varchar"
+                            name: "date",
+                            type: "date",
                         },
                         {
-                            name: "billingType",
+                            name: "fromBankAccountId",
                             type: "int",
                         },
                         {
-                            name: "paymentMode",
+                            name: "toBankAccountId",
                             type: "int",
                         },
                         {
-                            name: "installmentNumber",
+                            name: "userId",
                             type: "int",
-                        },
-                        {
-                            name: 'categoryId',
-                            type: 'int'
-                        },
-                        {
-                            name: 'bankAccountId',
-                            type: 'int'
-                        },
-                        {
-                            name: 'userId',
-                            type: 'int'
                         },
                         {
                             name: "active",
@@ -72,13 +52,13 @@ export class CreateMovement1638104592363 implements MigrationInterface {
                         }
                     ]
                 }
-            ),
-        true);
+            )
+        , true);
 
-        await queryRunner.createForeignKey("movement", new TableForeignKey(
+        await queryRunner.createForeignKey("transference", new TableForeignKey(
             {
-                name: "fkMovementToBankAccount",
-                columnNames: ["bankAccountId"],
+                name: "fkTransferenceToBankAccount",
+                columnNames: ["fromBankAccountId"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "bank_account",
                 onUpdate: "CASCADE",
@@ -86,20 +66,20 @@ export class CreateMovement1638104592363 implements MigrationInterface {
             }
         ));
 
-        await queryRunner.createForeignKey("movement", new TableForeignKey(
+        await queryRunner.createForeignKey("transference", new TableForeignKey(
             {
-                name: "fkMovementToCategory",
-                columnNames: ["categoryId"],
+                name: "fkTransferenceToBankAccount2",
+                columnNames: ["toBankAccountId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "category",
+                referencedTableName: "bank_account",
                 onUpdate: "CASCADE",
                 onDelete: "CASCADE"
             }
         ));
 
-        await queryRunner.createForeignKey("movement", new TableForeignKey(
+        await queryRunner.createForeignKey("transference", new TableForeignKey(
             {
-                name: "fkMovementToUser",
+                name: "fkTransferenceToUser",
                 columnNames: ["userId"],
                 referencedColumnNames: ["id"],
                 referencedTableName: "user",
@@ -110,10 +90,11 @@ export class CreateMovement1638104592363 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        const movement = await queryRunner.getTable("movement");
-        const foreignKeys = movement.foreignKeys;
-        await queryRunner.dropForeignKeys("movement", foreignKeys);
+        const transference = await queryRunner.getTable("transference");
+        const foreignKeys = transference.foreignKeys;
+        await queryRunner.dropForeignKeys("transference", foreignKeys);
 
-        await queryRunner.dropTable("movement");
+        await queryRunner.dropTable("transference");
     }
+
 }
